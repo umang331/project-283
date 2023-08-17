@@ -1,0 +1,233 @@
+#VRML_SIM R2023a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/appearances/protos/OsbWood.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+
+WorldInfo {
+  info [
+    "In this example, the robot turns on a slope."
+    "Its accelerometer sensor is used to switch on the bottommost LED."
+  ]
+  title "Accelerometer"
+  basicTimeStep 8
+  contactProperties [
+    ContactProperties {
+      material2 "body"
+      coulombFriction [
+        0
+      ]
+      softCFM 0.1
+    }
+  ]
+}
+Viewpoint {
+  orientation -0.1532947541883355 -0.03322718315864176 0.9876217254787786 3.756478019191444
+  position 0.9842488621906353 0.7366393664284536 0.567137010480202
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+}
+PointLight {
+  attenuation 0 0 1
+  intensity 0.6
+  location 0.6 0 0
+}
+DEF SLOPE Solid {
+  translation 0 0 0.15
+  rotation 1 0 0 -1.970795
+  children [
+    Shape {
+      appearance OsbWood {
+        textureTransform TextureTransform {
+          scale 0.5 2
+        }
+      }
+      geometry DEF BOX0 Box {
+        size 0.2 0.02 0.8
+      }
+    }
+  ]
+  name "green box"
+  boundingObject USE BOX0
+}
+Robot {
+  translation -0.0015363346035500406 0.014933425856457745 0.15453374004369516
+  rotation -0.7302421478364175 0.22712536593308946 0.6443294760237314 0.5552815767247277
+  children [
+    Accelerometer {
+    }
+    Transform {
+      translation 0 0 0.0415
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.0820075 0.364731 0.8
+            roughness 1
+            metalness 0
+          }
+          geometry DEF BODY Cylinder {
+            height 0.08
+            radius 0.045
+          }
+        }
+      ]
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 2.156000752167402
+        axis 0 1 0
+        anchor 0 0 0.025
+      }
+      device [
+        RotationalMotor {
+          name "left wheel motor"
+          consumptionFactor 70
+        }
+        PositionSensor {
+          name "left wheel sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0 0.045 0.025
+        rotation -0.2771458060366716 0.27714587680739905 -0.919989328832102 1.654093002779574
+        children [
+          DEF WHEEL Transform {
+            rotation 0.577656895078166 0.5771968951617173 -0.5771968951617173 -2.093935
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 1 0 0
+                  roughness 1
+                  metalness 0
+                }
+                geometry Cylinder {
+                  height 0.01
+                  radius 0.025
+                }
+              }
+            ]
+          }
+        ]
+        name "left wheel"
+        boundingObject USE WHEEL
+        physics DEF PHYSICS_WHEEL Physics {
+          density -1
+          mass 0.05
+        }
+        linearVelocity 0.01000305697008279 0.004540315199879357 -0.0019306754082316511
+        angularVelocity -0.17723625041375707 0.307366042530535 -0.43130242753881953
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position -2.1559987722097476
+        axis 0 1 0
+        anchor 0 0 0.025
+      }
+      device [
+        RotationalMotor {
+          name "right wheel motor"
+          consumptionFactor 70
+        }
+        PositionSensor {
+          name "right wheel sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0 -0.045 0.025
+        rotation 0.6915903156132965 -0.6915903688142496 0.208340099628639 3.552396346863187
+        children [
+          USE WHEEL
+        ]
+        boundingObject USE WHEEL
+        physics USE PHYSICS_WHEEL
+        linearVelocity -0.013230956661730188 -0.003864931382462195 0.00162705729144635
+        angularVelocity 0.18839597334284441 -0.5497641816478748 -0.06847770358903532
+      }
+    }
+    DistanceSensor {
+      translation 0.042 0.02 0.063
+      rotation 0 0 -1 -0.499205
+      children [
+        DEF SENSOR Transform {
+          rotation 0.577656895078166 0.5771968951617173 -0.5771968951617173 -2.093935
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.975691 0.981481 0.0252992
+                roughness 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.004
+                radius 0.008
+              }
+            }
+          ]
+        }
+      ]
+      name "ds0"
+      lookupTable [
+        0 1024 0
+        0.05 1024 0
+        0.15 0 0
+      ]
+      numberOfRays 2
+      aperture 1
+    }
+    DistanceSensor {
+      translation 0.042 -0.02 0.063
+      rotation 0 0 1 -0.500795
+      children [
+        USE SENSOR
+      ]
+      name "ds1"
+      lookupTable [
+        0 1024 0
+        0.05 1024 0
+        0.15 0 0
+      ]
+      numberOfRays 2
+      aperture 1
+    }
+    DEF SMILE Transform {
+      translation 0.036 0 0.025
+      rotation 0 0 1 -0.5007953071795859
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.721569 0.290196 0.290196
+            roughness 1
+            metalness 0
+          }
+          geometry Cylinder {
+            height 0.018
+            radius 0.009
+            subdivision 3
+          }
+        }
+      ]
+    }
+  ]
+  name "MyBot"
+  contactMaterial "body"
+  boundingObject Transform {
+    translation 0 0 0.0415
+    rotation 0 0 1 -1.570796
+    children [
+      USE BODY
+    ]
+  }
+  physics Physics {
+    density -1
+    mass 0.5
+  }
+  controller "RobotController"
+  linearVelocity -0.0017597031471713492 5.129944611169673e-05 -1.634511862400262e-05
+  angularVelocity 0.005579889772200533 -0.12119484669995696 -0.2498798283099704
+}
